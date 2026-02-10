@@ -70,6 +70,7 @@ Each step is described below.
         val = float("nan")   # placeholder for unlabeled prediction
     affinity.append(torch.tensor(val, dtype=torch.float32))`
   - Otherwise, all PPI-Graphomer installation and use instructions were followed exactly as listed on their GitHub. 
+  - Note: PPI-Graphomer is a third-party repo and is not committed here. To reproduce, clone PPI-Graphomer separately and apply the patch (patches/ppi-graphomer_inference_only.patch)
 
 ---
 
@@ -86,3 +87,10 @@ Each step is described below.
     - PPI-Graphomer: ppi-graphomer/result/default/evaluate.csv
     - Rosetta InterfaceAnalyzer: rosetta_InterfaceAnalyzer/selected_rosetta_scores.csv
 
+---
+
+## Notes
+
+- This repository is intended to document how the tools were set up and connected, not to evaluate or benchmark their performance.
+- No experimental affinity data are used.
+- Results and conclusions are intentionally excluded from this README.
