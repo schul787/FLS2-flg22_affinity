@@ -1,0 +1,19 @@
+#!/bin/bash --login
+
+#SBATCH --job-name=fls2_50peptides
+#SBATCH -p general-short
+#SBATCH --time=4:00:00
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=32GB
+
+module purge
+module load CUDA/12.6.0
+module load Miniforge3
+export PYTHONNOUSERSITE=1
+conda activate boltz
+
+boltz predict /mnt/home/schul787/CHE882/affinity/inputs \
+  --use_msa_server \
+  --out_dir /mnt/home/schul787/CHE882/affinity \
+  --cache /mnt/gs21/scratch/schul787/boltz

@@ -1,0 +1,25 @@
+#!/bin/bash --login
+#SBATCH --job-name=IA_AB
+#SBATCH -p general-short
+#SBATCH --time=4:00:00
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=32G
+#SBATCH --output=IA_AB_%j.out
+#SBATCH --error=IA_AB_%j.err
+
+module purge
+
+ROSETTA_BIN="/mnt/research/woldring_lab/Rosetta/rosetta_bin_linux_2020.08.61146_bundle/main/source/bin/InterfaceAnalyzer.linuxgccrelease"
+ROSETTA_DB="/mnt/research/woldring_lab/Rosetta/rosetta_bin_linux_2020.08.61146_bundle/main/database"
+INPDB_LIST="/mnt/home/schul787/CHE882/affinity/rosetta_InterfaceAnalyzer/in_pdbs.txt"
+
+"$ROSETTA_BIN" \
+  -database "$ROSETTA_DB" \
+  -in:file:l "$INPDB_LIST" \
+  -interface A_B \
+  -pack_input true \
+  -pack_separated true \
+  -add_regular_scores_to_scorefile true \
+  -out:file:score_only true \
+  -out:file:scorefile "interfaces.sc" \
+

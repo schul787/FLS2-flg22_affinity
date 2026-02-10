@@ -1,0 +1,78 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*~
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Conda / envs
+.conda/
+miniforge*/
+mambaforge*/
+conda/
+*.lock
+
+# Logs / scheduler outputs
+*.log
+*.err
+*.out
+slurm-*.out
+nohup.out
+
+# Large structure files / modeling outputs
+*.pdb
+*.cif
+*.mmcif
+*.mrc
+
+# Boltz / AF / MSA outputs (common names)
+msas/
+msa/
+*.a3m
+*.sto
+outputs/
+results/
+predictions/
+preds/
+tmp/
+cache/
+
+# Rosetta outputs
+score.sc
+*.sc
+rosetta_out/
+interfaceanalyzer_out/
+
+# ML artifacts
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.npz
+
+# Archives
+*.tar
+*.tar.gz
+*.gz
+*.zip
+*.7z
+
+# Data dumps that can be large
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+
+
+ppi-graphomer/
+**/ppi-graphomer/
