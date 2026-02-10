@@ -1,0 +1,107 @@
+diff --git a/generate_batch.py b/generate_batch.py
+index 3fbae71..c5dbd7d 100644
+--- a/generate_batch.py
++++ b/generate_batch.py
+@@ -77,7 +77,15 @@ def process_train_data(train_data, pro_len, batch_size=1000):
+         interface_atoms.append(interface_res_matrix)
+         # 注意后来的系数
+         # affinity.append(torch.tensor(iptm_dict[item["protein_name"].replace(".pdb","")[0:-7]]).float())
+-        affinity.append(torch.tensor(item["affinity"]))
++       
++        # change made here b/c we don't have ground truth affinity labels -SS
++        # original line: affinity.append(torch.tensor(item["affinity"]))
++        val = item.get("affinity", None)
++        if val is None:
++            val = float("nan")   # placeholder for unlabeled prediction
++        affinity.append(torch.tensor(val, dtype=torch.float32))
++        # end of change -SS
++      
+         if_type=torch.tensor(item["interaction_type_matrix"]).type(torch.int16)
+         interaction_type.append(F.pad(if_type,(0,pro_len-if_type.shape[0],0,pro_len-if_type.shape[0])))
+         if_matrix=torch.tensor(item["interaction_matrix"]).type(torch.int16)
+diff --git a/result/default/evaluate.csv b/result/default/evaluate.csv
+index f582822..bc8069b 100644
+--- a/result/default/evaluate.csv
++++ b/result/default/evaluate.csv
+@@ -1,19 +1,51 @@
+ ,predict,label
+-1DQJ.pdb,6.880960941314697,11.658638680501028
+-1AK4.pdb,6.880960941314697,6.537409726748899
+-1E96.pdb,6.880960464477539,7.590777200692761
+-1A2K.pdb,6.880960941314697,9.301877281367291
+-1EFN.pdb,6.880960464477539,10.114722368914254
+-1FFW.pdb,6.880960464477539,7.979590686235092
+-1DFJ.pdb,6.880960941314697,18.03305345899494
+-1BUH.pdb,6.880960941314697,9.696640565734894
+-1ACB.pdb,6.880960941314697,13.220960619633262
+-1AHW.pdb,6.880960941314697,11.543698319951982
+-1BVN.pdb,6.880960941314697,15.043796038069143
+-1AKJ.pdb,6.880960941314697,5.297201855645145
+-1AY7.pdb,6.880960464477539,13.220960619633262
+-1BVK.pdb,6.880960941314697,10.70585143634004
+-1B6C.pdb,6.880960464477539,8.932377930396079
+-1E6E.pdb,6.880960464477539,8.268069401037723
+-1BJ1.pdb,6.880960941314697,11.543698319951982
+-1AVX.pdb,6.880960464477539,12.702683127119753
++fls2_peptide50_model_0.pdb,11.071085,
++fls2_peptide48_model_0.pdb,10.990006,
++fls2_peptide44_model_0.pdb,11.0668,
++fls2_peptide36_model_0.pdb,11.040679,
++fls2_peptide05_model_0.pdb,11.083171,
++fls2_peptide26_model_0.pdb,11.061446,
++fls2_peptide07_model_0.pdb,11.099262,
++fls2_peptide34_model_0.pdb,11.040142,
++fls2_peptide10_model_0.pdb,10.9950485,
++fls2_peptide41_model_0.pdb,11.028347,
++fls2_peptide12_model_0.pdb,11.055312,
++fls2_peptide46_model_0.pdb,11.021541,
++fls2_peptide37_model_0.pdb,11.0367985,
++fls2_peptide04_model_0.pdb,11.089671,
++fls2_peptide20_model_0.pdb,11.044706,
++fls2_peptide19_model_0.pdb,11.074812,
++fls2_peptide35_model_0.pdb,10.970179,
++fls2_peptide49_model_0.pdb,11.08774,
++fls2_peptide16_model_0.pdb,11.048249,
++fls2_peptide01_model_0.pdb,11.078098,
++fls2_peptide24_model_0.pdb,11.028522,
++fls2_peptide43_model_0.pdb,11.029856,
++fls2_peptide14_model_0.pdb,10.969677,
++fls2_peptide29_model_0.pdb,10.997328,
++fls2_peptide22_model_0.pdb,11.051495,
++fls2_peptide11_model_0.pdb,11.104615,
++fls2_peptide09_model_0.pdb,11.071463,
++fls2_peptide45_model_0.pdb,11.009724,
++fls2_peptide47_model_0.pdb,11.060839,
++fls2_peptide23_model_0.pdb,11.090225,
++fls2_peptide27_model_0.pdb,11.054733,
++fls2_peptide17_model_0.pdb,11.034452,
++fls2_peptide13_model_0.pdb,11.003048,
++fls2_peptide25_model_0.pdb,10.999947,
++fls2_peptide38_model_0.pdb,11.044942,
++fls2_peptide30_model_0.pdb,11.018349,
++fls2_peptide28_model_0.pdb,11.081354,
++fls2_peptide03_model_0.pdb,11.139291,
++fls2_peptide08_model_0.pdb,11.126207,
++fls2_peptide18_model_0.pdb,11.070434,
++fls2_peptide06_model_0.pdb,11.060127,
++fls2_peptide15_model_0.pdb,11.07328,
++fls2_peptide31_model_0.pdb,11.013271,
++fls2_peptide33_model_0.pdb,11.030151,
++fls2_peptide39_model_0.pdb,11.055002,
++fls2_peptide40_model_0.pdb,11.020842,
++fls2_peptide42_model_0.pdb,11.00003,
++fls2_peptide02_model_0.pdb,11.148338,
++fls2_peptide32_model_0.pdb,11.009376,
++fls2_peptide21_model_0.pdb,11.091019,
+diff --git a/result/default/evaluate.txt b/result/default/evaluate.txt
+index 3130c2d..607bdc4 100644
+--- a/result/default/evaluate.txt
++++ b/result/default/evaluate.txt
+@@ -1,2 +1,2 @@
+-Evaluate all Loss: 3.9661 | Iter PPL: 52.7769
+-Evaluate all R: 0.2100 
++Evaluate all Loss: nan | Iter PPL:     nan
++Evaluate all R: nan 
+diff --git a/result/default/relative_0.png b/result/default/relative_0.png
+index f8115b7..795cd48 100644
+Binary files a/result/default/relative_0.png and b/result/default/relative_0.png differ
